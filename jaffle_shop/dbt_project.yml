@@ -33,3 +33,6 @@ models:
       +materialized: table
     staging:
       +materialized: view
+
+dbt-cloud:
+  project-id: 70471823496911
