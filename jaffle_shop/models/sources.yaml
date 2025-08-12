@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: Postgres database for our customers and orders
+    database: analytics
+    schema: jaffle_shop
+    tables:
+      - name: customers
+        description: One record per customer.
+      - name: orders
+        description: One record per order. Includes cancelled and deleted orders.
+  - name: stripe
+    description: Postgres database for the payments
+    database: analytics
+    schema: stripe
+    tables:
+      - name: payment
+        description: Payment details for each order.
