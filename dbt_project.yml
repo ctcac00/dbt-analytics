@@ -36,6 +36,8 @@ clean-targets: # directories to be removed by `dbt clean`
 models:
   analytics:
     # Applies to all files under models/example/
+    marts:
+      +enabled: true
 
 dbt-cloud:
   project-id: 11313
