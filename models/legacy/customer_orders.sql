@@ -8,18 +8,18 @@ WITH paid_orders AS (
         p.payment_finalized_date,
         c.first_name AS customer_first_name,
         c.last_name AS customer_last_name
-    FROM analytics.dbt_ccastro.orders AS orders
+    FROM ccastro_sandbox.jaffle_shop.orders AS orders
     LEFT JOIN (
         SELECT
             orderid AS order_id,
             max(created) AS payment_finalized_date,
             sum(amount) / 100.0 AS total_amount_paid
-        FROM analytics.dbt_ccastro.payments
+        FROM ccastro_sandbox.stripe.payment
         WHERE status <> 'fail'
         GROUP BY 1
     ) p
         ON orders.id = p.order_id
-    LEFT JOIN analytics.dbt_ccastro.customers c ON orders.user_id = c.id
+    LEFT JOIN ccastro_sandbox.jaffle_shop.customers c ON orders.user_id = c.id
 ),
 
 customer_orders AS (
@@ -28,8 +28,8 @@ customer_orders AS (
         min(order_date) AS first_order_date,
         max(order_date) AS most_recent_order_date,
         count(orders.id) AS number_of_orders
-    FROM analytics.dbt_ccastro.customers c
-    LEFT JOIN analytics.dbt_ccastro.orders AS orders
+    FROM ccastro_sandbox.jaffle_shop.customers c
+    LEFT JOIN ccastro_sandbox.jaffle_shop.orders AS orders
         ON orders.user_id = c.id
     GROUP BY 1
 )

@@ -1,9 +1,12 @@
 version: 2
 
 sources:
-  - name: dbt_ccastro
-    database: analytics
+  - name: jaffle_shop
+    database: ccastro_sandbox
     tables:
       - name: customers
       - name: orders
-      - name: payments
+  - name: stripe
+    database: ccastro_sandbox
+    tables:
+      - name: payment
