@@ -1,4 +1,30 @@
-with paid_orders as (
+with
+
+-- Import CTEs
+
+customers as (
+
+    select * from {{ source('dbt_ccastro', 'customers') }}
+
+),
+
+orders as (
+
+    select * from {{ source('dbt_ccastro', 'orders') }}
+
+),
+
+payments as (
+
+    select * from {{ source('dbt_ccastro', 'payments') }}
+
+),
+
+-- Logical CTEs
+-- Final CTE
+-- Simple Select Statment
+
+paid_orders as (
     select
         orders.id as order_id,
         orders.user_id as customer_id,
@@ -8,18 +34,17 @@ with paid_orders as (
         p.payment_finalized_date,
         c.first_name as customer_first_name,
         c.last_name as customer_last_name
-    from {{ source('dbt_ccastro', 'orders') }} as orders
+    from orders
     left join (
         select
             orderid as order_id,
             max(created) as payment_finalized_date,
             sum(amount) / 100.0 as total_amount_paid
-        from {{ source('dbt_ccastro', 'payments') }}
+        from payments
         where status <> 'fail'
         group by 1
-    ) p
-        on orders.id = p.order_id
-    left join analytics.dbt_ccastro.customers c on orders.user_id = c.id
+    ) p on orders.id = p.order_id
+    left join customers as c on orders.user_id = c.id
 ),
 
 customer_orders as (
@@ -28,9 +53,8 @@ customer_orders as (
         min(order_date) as first_order_date,
         max(order_date) as most_recent_order_date,
         count(orders.id) as number_of_orders
-    from {{ source('dbt_ccastro', 'customers') }} as c
-    left join {{ source('dbt_ccastro', 'orders') }} as orders
-        on orders.user_id = c.id
+    from customers as c
+    left join orders on orders.user_id = c.id
     group by 1
 )
 
