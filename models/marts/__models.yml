@@ -25,7 +25,8 @@ models:
         description: Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.
         tests:
           - accepted_values:
-              values: ["new", "returning"]
+              arguments:
+                values: ["new", "returning"]
 
   - name: fct_orders
     description: Order overview data mart, offering key details for each order inlcluding if it's a customer's first order and a food vs. drink item breakdown. One row per order.
@@ -39,8 +40,9 @@ models:
         description: The foreign key relating to the customer who placed the order.
         tests:
           - relationships:
-              to: ref('stg_customers')
-              field: customer_id
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
       - name: location_id
         description: The foreign key relating to the location the order was placed at.
       - name: order_total
@@ -69,3 +71,12 @@ models:
         description: A boolean indicating if this order included any food items.
       - name: is_drink_order
         description: A boolean indicating if this order included any drink items.
+
+  - name: time_spine_daily
+    description: A time spine with one row per day, ranging from 5 years in the past to 30 days into the future.
+    time_spine:
+      standard_granularity_column: date_day  # The base column used for time joins
+    columns:
+      - name: date_day
+        description: The base date column for daily granularity
+        granularity: day
