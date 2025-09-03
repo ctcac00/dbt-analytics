@@ -3,10 +3,10 @@ version: 2
 sources:
   - name: jaffle_shop
     database: ccastro_sandbox
+    schema: jaffle_shop
     tables:
       - name: customers
       - name: orders
-  - name: stripe
-    database: ccastro_sandbox
-    tables:
-      - name: payment
+      - name: items
+      - name: products
+      - name: supplies
