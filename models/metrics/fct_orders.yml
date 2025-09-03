@@ -1,0 +1,9 @@
+semantic_models:
+  - name: orders
+    model: ref('fct_orders')
+    entities:
+      - name: order_id
+        type: primary
+    dimensions:
+      - name: is_drink_order
+        type: categorical
