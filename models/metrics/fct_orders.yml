@@ -186,14 +186,16 @@ metrics:
     type: cumulative
     type_params:
       measure: order_total
-      window: 1 month
+      cumulative_type_params:
+        window: 1 month
   - name: "cumulative_order_amount_mtd"
     label: "cumulative_order_amount_mtd"    
     description: "The month to date value of all orders"
     type: cumulative
     type_params:
       measure: order_total
-      grain_to_date: month
+      cumulative_type_params:
+        grain_to_date: month
 saved_queries:
   - name: order_metrics
     description: testing out order metrics in one table 

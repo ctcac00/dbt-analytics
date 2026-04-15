@@ -6,7 +6,7 @@ models:
     columns:
       - name: customer_id
         description: The unique key of the orders mart.
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: customer_name
@@ -23,7 +23,7 @@ models:
         description: The sum of all the order totals (including tax) that a customer has ever placed.
       - name: customer_type
         description: Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.
-        tests:
+        data_tests:
           - accepted_values:
               arguments:
                 values: ["new", "returning"]
@@ -33,12 +33,12 @@ models:
     columns:
       - name: order_id
         description: The unique key of the orders mart.
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: customer_id
         description: The foreign key relating to the customer who placed the order.
-        tests:
+        data_tests:
           - relationships:
               arguments:
                 to: ref('stg_customers')
@@ -72,10 +72,10 @@ models:
       - name: is_drink_order
         description: A boolean indicating if this order included any drink items.
 
-  - name: time_spine_daily
+  - name: metricflow_time_spine
     description: A time spine with one row per day, ranging from 5 years in the past to 30 days into the future.
     time_spine:
-      standard_granularity_column: date_day  # The base column used for time joins
+      standard_granularity_column: date_day
     columns:
       - name: date_day
         description: The base date column for daily granularity
